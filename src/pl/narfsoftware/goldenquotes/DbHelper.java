@@ -24,6 +24,10 @@ public class DbHelper extends SQLiteOpenHelper {
 	public static final String C_AUTHOR = "author";
 	public static final String C_LIKE_COUNT = "like_count";
 
+	public static final String TABLE_AUTHORS = "Authors";
+	public static final String C_NAME = "name";
+	public static final String C_DESCRIPTION = "description";
+
 	private SQLiteDatabase db;
 
 	private final Context context;
@@ -34,14 +38,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public void createDataBase() throws IOException {
-		if (!dbExists()) {
-			this.getReadableDatabase();
-			try {
-				copyDataBase();
-			} catch (IOException e) {
-				throw new Error("Error copying database");
-			}
+		// if (!dbExists()) {
+		this.getReadableDatabase();
+		try {
+			copyDataBase();
+		} catch (IOException e) {
+			throw new Error("Error copying database");
 		}
+		// }
 	}
 
 	private boolean dbExists() {
@@ -91,9 +95,13 @@ public class DbHelper extends SQLiteOpenHelper {
 		Random r = new Random();
 		Integer id = r.nextInt(count) + 1;
 
-		return db.query(true, TABLE_QUOTES,
-				new String[] { C_CONTENT, C_AUTHOR }, C_ID + "=?",
-				new String[] { id.toString() }, null, null, null, null);
+		final String THEQ = "select " + TABLE_QUOTES + "." + C_CONTENT + ", "
+				+ TABLE_AUTHORS + "." + C_NAME + " from " + TABLE_QUOTES
+				+ " join " + TABLE_AUTHORS + " on " + TABLE_QUOTES + "."
+				+ C_AUTHOR + "=" + TABLE_AUTHORS + "." + C_ID + " where "
+				+ TABLE_QUOTES + "." + C_ID + "=?";
+
+		return db.rawQuery(THEQ, new String[] { id.toString() });
 	}
 
 	@Override

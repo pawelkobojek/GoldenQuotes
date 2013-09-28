@@ -2,16 +2,17 @@ package pl.narfsoftware.goldenquotes;
 
 import java.io.IOException;
 
-import android.app.Activity;
+import android.app.TabActivity;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TabHost;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends TabActivity {
 
 	private static final String TAG = "MainActivity";
 
@@ -26,6 +27,14 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		TabHost tabHost = getTabHost();
+		tabHost.addTab(tabHost.newTabSpec("tab_RandomQuote")
+				.setIndicator("Random Quote").setContent(R.id.tabRandomQuote));
+		tabHost.addTab(tabHost.newTabSpec("tab_Authors")
+				.setIndicator("Authors").setContent(R.id.tabAuthors));
+
+		tabHost.setCurrentTab(0);
 
 		quoteTextView = (TextView) findViewById(R.id.text_quote);
 
@@ -61,8 +70,7 @@ public class MainActivity extends Activity {
 		quoteTextView
 				.setText(c.getString(c.getColumnIndex(DbHelper.C_CONTENT)));
 
-		authorTextView
-				.setText(c.getString(c.getColumnIndex(DbHelper.C_AUTHOR)));
+		authorTextView.setText(c.getString(c.getColumnIndex(DbHelper.C_NAME)));
 
 		Log.d(TAG, "QUOTE: " + quoteTextView.getText().toString());
 		Log.d(TAG, "AUTHOR: " + authorTextView.getText().toString());
