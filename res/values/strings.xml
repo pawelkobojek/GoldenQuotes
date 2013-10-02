@@ -4,5 +4,7 @@
     <string name="app_name">Golden Quotes</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="authors_list">List of all authors</string>
+    <string name="particular_author">Author</string>
 
 </resources>

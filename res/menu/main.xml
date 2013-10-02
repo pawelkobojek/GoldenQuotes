@@ -1,9 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/action_search"
+    <item
+        android:id="@+id/action_author"
+        android:icon="@drawable/ic_action_person"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_storage"/>
-    
+        android:title="@string/particular_author"/>
+    <item
+        android:id="@+id/action_authors_list"
+        android:icon="@drawable/ic_action_storage"
+        android:showAsAction="ifRoom"
+        android:title="@string/authors_list"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
