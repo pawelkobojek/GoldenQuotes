@@ -6,5 +6,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="authors_list">List of all authors</string>
     <string name="particular_author">Author</string>
+    <string name="favourite">Favourite</string>
+    <string name="random_quote_hint">What will inspire you today?\nPress \'Gamble\' button to roll for the quotes...</string>
+    <string name="title_activity_author_info">Author info</string>
 
 </resources>

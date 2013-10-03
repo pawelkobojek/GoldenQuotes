@@ -1,14 +1,15 @@
 package pl.narfsoftware.goldenquotes;
 
-import java.io.IOException;
+import java.util.Random;
 
+import pl.narfsoftware.goldenquotes.logic.Quote;
 import android.app.Activity;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -18,9 +19,12 @@ public class MainActivity extends Activity {
 	private static final String FONT_PATH = "Chantelli_Antiqua.ttf";
 
 	private DbHelper db;
+	private Quote quote;
 
 	private TextView quoteTextView;
 	private TextView authorTextView;
+
+	private static boolean started = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +38,12 @@ public class MainActivity extends Activity {
 
 		authorTextView = (TextView) findViewById(R.id.text_author);
 
-		this.db = new DbHelper(this);
-		try {
-			this.db.createDataBase();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (!started) {
+			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
+			started = true;
 		}
-		this.db.openDataBase();
+
+		db = ((GoldenQuotesApp) getApplication()).getDatabase();
 	}
 
 	@Override
@@ -52,20 +54,40 @@ public class MainActivity extends Activity {
 	}
 
 	public void onClickBtn(View v) {
-		Cursor c = this.db.gamble();
+		(findViewById(R.id.stacked_buttons)).setVisibility(View.VISIBLE);
 
-		if (c != null) {
-			c.moveToFirst();
+		Random r = new Random();
+		int id = r.nextInt(this.db.getQuotesCount()) + 1;
+		quote = Quote.getQuote(id, db);
+
+		quoteTextView.setText(quote.getContent());
+
+		authorTextView.setText(quote.getAuthor().getName());
+
+		Button favouriteBtn = (Button) findViewById(R.id.btn_favourite);
+		if (quote.isFavourite()) {
+			favouriteBtn.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.ic_action_important, 0, 0, 0);
+		} else {
+			favouriteBtn.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.ic_action_not_important, 0, 0, 0);
 		}
-
-		quoteTextView
-				.setText(c.getString(c.getColumnIndex(DbHelper.C_CONTENT)));
-
-		authorTextView.setText(c.getString(c.getColumnIndex(DbHelper.C_NAME)));
 
 		Log.d(TAG, "QUOTE: " + quoteTextView.getText().toString());
 		Log.d(TAG, "AUTHOR: " + authorTextView.getText().toString());
 
 	}
 
+	public void onClickBtnFavourite(View v) {
+		if (quote.isFavourite()) {
+			((Button) v).setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.ic_action_not_important, 0, 0, 0);
+			quote.setFavourite(false, db);
+
+		} else {
+			((Button) v).setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.ic_action_important, 0, 0, 0);
+			quote.setFavourite(true, db);
+		}
+	}
 }

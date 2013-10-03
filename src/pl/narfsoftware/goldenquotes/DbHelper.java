@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
+import pl.narfsoftware.goldenquotes.logic.Author;
+import pl.narfsoftware.goldenquotes.logic.Quote;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -17,16 +20,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	private static final String DB_PATH = "/data/data/pl.narfsoftware.goldenquotes/databases/";
 	private static final String DB_NAME = "quotes";
-
-	public static final String TABLE_QUOTES = "Quotes";
-	public static final String C_ID = "_id";
-	public static final String C_CONTENT = "content";
-	public static final String C_AUTHOR = "author";
-	public static final String C_LIKE_COUNT = "like_count";
-
-	public static final String TABLE_AUTHORS = "Authors";
-	public static final String C_NAME = "name";
-	public static final String C_DESCRIPTION = "description";
 
 	private SQLiteDatabase db;
 
@@ -53,7 +46,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		try {
 			String path = DB_PATH + DB_NAME;
 			checkDB = SQLiteDatabase.openDatabase(path, null,
-					SQLiteDatabase.OPEN_READONLY);
+					SQLiteDatabase.OPEN_READWRITE);
 		} catch (SQLiteException e) {
 			// db doesnt exist
 		}
@@ -83,25 +76,52 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void openDataBase() throws SQLException {
 		String path = DB_PATH + DB_NAME;
 		this.db = SQLiteDatabase.openDatabase(path, null,
-				SQLiteDatabase.OPEN_READONLY);
+				SQLiteDatabase.OPEN_READWRITE);
+	}
+
+	public int getQuotesCount() {
+		Cursor c = db
+				.rawQuery("select count(*) from " + Quote.TABLE_NAME, null);
+		c.moveToFirst();
+		int count = c.getInt(0);
+		return count;
 	}
 
 	public Cursor gamble() {
-
-		Cursor c = db.rawQuery("select count(*) from " + TABLE_QUOTES, null);
+		Cursor c = db
+				.rawQuery("select count(*) from " + Quote.TABLE_NAME, null);
 		c.moveToFirst();
 		int count = c.getInt(0);
 
 		Random r = new Random();
 		Integer id = r.nextInt(count) + 1;
 
-		final String THEQ = "select " + TABLE_QUOTES + "." + C_CONTENT + ", "
-				+ TABLE_AUTHORS + "." + C_NAME + " from " + TABLE_QUOTES
-				+ " join " + TABLE_AUTHORS + " on " + TABLE_QUOTES + "."
-				+ C_AUTHOR + "=" + TABLE_AUTHORS + "." + C_ID + " where "
-				+ TABLE_QUOTES + "." + C_ID + "=?";
+		final String THEQ = "select " + Quote.TABLE_NAME + "."
+				+ Quote.C_CONTENT + ", " + Author.TABLE_NAME + "."
+				+ Author.C_NAME + " from " + Quote.TABLE_NAME + " join "
+				+ Author.TABLE_NAME + " on " + Quote.TABLE_NAME + "."
+				+ Quote.C_AUTHOR + "=" + Author.TABLE_NAME + "." + Quote.C_ID
+				+ " where " + Quote.TABLE_NAME + "." + Quote.C_ID + "=?";
 
 		return db.rawQuery(THEQ, new String[] { id.toString() });
+	}
+
+	public Cursor getQuote(Integer id) {
+		return db.query(true, Quote.TABLE_NAME, Quote.ALL_COLUMNS, Quote.C_ID
+				+ "=?", new String[] { id.toString() }, null, null, null, null);
+	}
+
+	public Cursor getAuthor(Integer id) {
+
+		return db.query(true, Author.TABLE_NAME, Author.ALL_COLUMNS, Quote.C_ID
+				+ "=?", new String[] { id.toString() }, null, null, null, null);
+	}
+
+	public int updateFavourite(Integer id, boolean fav) {
+		ContentValues values = new ContentValues();
+		values.put(Quote.C_LIKE_COUNT, fav ? 1 : 0);
+		return db.update(Quote.TABLE_NAME, values, Quote.C_ID + "=?",
+				new String[] { id.toString() });
 	}
 
 	@Override

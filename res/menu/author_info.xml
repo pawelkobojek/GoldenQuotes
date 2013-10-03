@@ -1,11 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_authors_list"
-        android:icon="@drawable/ic_action_storage"
-        android:showAsAction="ifRoom"
-        android:title="@string/authors_list"/>
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"

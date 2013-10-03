@@ -19,7 +19,7 @@
         android:fontFamily="Thin"
         android:freezesText="true"
         android:gravity="bottom|center_horizontal"
-        android:hint="QUOTATION"
+        android:hint="@string/random_quote_hint"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -30,23 +30,36 @@
         android:layout_weight="0.15"
         android:fontFamily="sans-serif"
         android:freezesText="true"
-        android:gravity="right"
-        android:hint="AUTHOR" />
+        android:gravity="right" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/stacked_buttons"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.30"
-        android:orientation="horizontal" >
+        android:layout_weight="0.30" >
 
         <Button
+            style="@android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/particular_author"
+            android:background="@null"
             android:drawableLeft="@drawable/ic_action_person"
-            android:background="@null" />
+            android:layout_alignParentLeft="true"
+            android:text="@string/particular_author" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_favourite"
+            style="@android:attr/buttonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_action_not_important"
+            android:text="@string/favourite"
+            android:layout_alignParentRight="true"
+            android:onClick="onClickBtnFavourite" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/button_gamble"
