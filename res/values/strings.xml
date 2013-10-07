@@ -9,5 +9,9 @@
     <string name="favourite">Favourite</string>
     <string name="random_quote_hint">What will inspire you today?\nPress \'Gamble\' button to roll for the quotes...</string>
     <string name="title_activity_author_info">Author info</string>
+    <string name="birth_date">Birth date:</string>
+    <string name="death_date">Death date:</string>
+    <string name="nationality">Nationality:</string>
+    <string name="profession">Profession:</string>
 
 </resources>

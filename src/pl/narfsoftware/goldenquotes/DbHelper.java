@@ -31,14 +31,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public void createDataBase() throws IOException {
-		// if (!dbExists()) {
-		this.getReadableDatabase();
-		try {
-			copyDataBase();
-		} catch (IOException e) {
-			throw new Error("Error copying database");
+		if (!dbExists()) {
+			this.getReadableDatabase();
+			try {
+				copyDataBase();
+			} catch (IOException e) {
+				throw new Error("Error copying database");
+			}
 		}
-		// }
 	}
 
 	private boolean dbExists() {
@@ -126,10 +126,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public synchronized void close() {
-		if (this.db != null)
-			this.db.close();
 
 		super.close();
+		if (this.db != null)
+			this.db.close();
 	}
 
 	@Override

@@ -10,96 +10,105 @@
     tools:context=".AuthorInfoActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/text_author_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:hint="AUTHOR NAME"
+        android:freezesText="true"
         android:gravity="center"
+        android:text="AUTHOR NAME"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/text_birth_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_alignLeft="@+id/textView1"
-        android:hint="BIRTH_DATE" />
+        android:layout_alignBaseline="@+id/text_birth_value"
+        android:layout_alignBottom="@+id/text_birth_value"
+        android:layout_alignLeft="@+id/text_author_name"
+        android:freezesText="true"
+        android:text="@string/birth_date" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/text_birth_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignRight="@+id/text_author_name"
+        android:layout_below="@+id/text_author_name"
         android:layout_marginTop="41dp"
-        android:text="DATE" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="20dp"
-        android:hint="DEATH_DATE" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView4"
-        android:layout_alignBottom="@+id/textView4"
-        android:layout_alignRight="@+id/textView3"
+        android:freezesText="true"
         android:hint="DATE" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/text_death_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/text_birth_date"
+        android:layout_below="@+id/text_birth_date"
         android:layout_marginTop="20dp"
-        android:hint="NATIONALITY" />
+        android:freezesText="true"
+        android:text="@string/death_date" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/text_death_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView6"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_alignRight="@+id/textView5"
-        android:hint="VALUE" />
+        android:layout_alignBaseline="@+id/text_death_date"
+        android:layout_alignBottom="@+id/text_death_date"
+        android:layout_alignRight="@+id/text_birth_value"
+        android:freezesText="true"
+        android:hint="DATE" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/text_nationality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView6"
-        android:layout_below="@+id/textView6"
+        android:layout_alignLeft="@+id/text_death_date"
+        android:layout_below="@+id/text_death_date"
         android:layout_marginTop="20dp"
-        android:hint="PROFESSION" />
+        android:freezesText="true"
+        android:text="@string/nationality" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/text_nationality_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView8"
-        android:layout_alignRight="@+id/textView7"
+        android:layout_alignBaseline="@+id/text_nationality"
+        android:layout_alignBottom="@+id/text_nationality"
+        android:layout_alignRight="@+id/text_death_value"
+        android:freezesText="true"
         android:text="VALUE" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/text_profession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_nationality"
+        android:layout_marginTop="20dp"
+        android:freezesText="true"
+        android:text="@string/profession" />
+
+    <TextView
+        android:id="@+id/text_profession_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/text_profession"
+        android:layout_alignRight="@+id/text_nationality_value"
+        android:freezesText="true"
+        android:hint="VALUE" />
+
+    <TextView
+        android:id="@+id/text_author_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView8"
+        android:layout_below="@+id/text_profession"
         android:layout_marginTop="30dp"
-        android:text="DESCRIPTION" />
+        android:freezesText="true"
+        android:hint="DESCRIPTION" />
 
 </RelativeLayout>

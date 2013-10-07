@@ -19,10 +19,10 @@ public class GoldenQuotesApp extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.db.openDataBase();
 	}
 
 	public DbHelper getDatabase() {
+		this.db.openDataBase();
 		return this.db;
 	}
 
