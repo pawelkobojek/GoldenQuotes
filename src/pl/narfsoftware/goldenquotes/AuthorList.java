@@ -58,7 +58,7 @@ public class AuthorList extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// super.onListItemClick(l, v, position, id);
 		Toast.makeText(this,
-				"ID=" + l.getItemAtPosition(position).getTag().toString(),
+				"ID=" + l.getItemAtPosition(position).toString(),
 				Toast.LENGTH_SHORT).show();
 	}
 
