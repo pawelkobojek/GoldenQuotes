@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -70,6 +71,17 @@ public class MainActivity extends Activity {
 				favouriteBtn.setCompoundDrawablesWithIntrinsicBounds(
 						R.drawable.ic_action_not_important, 0, 0, 0);
 			}
+		}
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_authors_list:
+			startActivity(new Intent(this, AuthorList.class));
+			return true;
+		default:
+			return super.onMenuItemSelected(featureId, item);
 		}
 	}
 

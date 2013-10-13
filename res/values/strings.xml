@@ -13,5 +13,6 @@
     <string name="death_date">Death date:</string>
     <string name="nationality">Nationality:</string>
     <string name="profession">Profession:</string>
+    <string name="title_activity_author_list">Authors</string>
 
 </resources>

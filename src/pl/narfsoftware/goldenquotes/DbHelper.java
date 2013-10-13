@@ -144,4 +144,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	public Cursor getAuthorsList() {
+		return db.query(true, Author.TABLE_NAME, Author.ALL_COLUMNS, null,
+				null, null, null, null, null);
+	}
+
 }
