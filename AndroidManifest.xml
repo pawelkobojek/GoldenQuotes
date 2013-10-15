@@ -25,11 +25,7 @@
         </activity>
         <activity
             android:name="pl.narfsoftware.goldenquotes.AuthorInfoActivity"
-            android:label="@string/title_activity_author_info"
-            android:parentActivityName="pl.narfsoftware.goldenquotes.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.narfsoftware.goldenquotes.MainActivity" />
+            android:label="@string/title_activity_author_info" >
         </activity>
         <activity
             android:name="pl.narfsoftware.goldenquotes.AuthorList"
@@ -38,6 +34,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.narfsoftware.goldenquotes.MainActivity" />
+        </activity>
+        <activity
+            android:name="pl.narfsoftware.goldenquotes.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="pl.narfsoftware.goldenquotes.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.narfsoftware.goldenquotes.MainActivity" />
+        </activity>
+        <activity
+            android:name="pl.narfsoftware.goldenquotes.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

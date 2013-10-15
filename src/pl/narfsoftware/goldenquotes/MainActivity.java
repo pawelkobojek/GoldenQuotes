@@ -29,8 +29,6 @@ public class MainActivity extends Activity {
 	private TextView authorTextView;
 	private Button favouriteBtn;
 
-	private static boolean started = false;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,9 +43,8 @@ public class MainActivity extends Activity {
 
 		favouriteBtn = (Button) findViewById(R.id.btn_favourite);
 
-		if (!started) {
+		if (quote == null) {
 			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
-			started = true;
 		}
 		db = ((GoldenQuotesApp) getApplication()).getDatabase();
 	}
@@ -79,6 +76,12 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_authors_list:
 			startActivity(new Intent(this, AuthorList.class));
+			return true;
+		case R.id.action_about:
+			startActivity(new Intent(this, AboutActivity.class));
+			return true;
+		case R.id.action_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		default:
 			return super.onMenuItemSelected(featureId, item);

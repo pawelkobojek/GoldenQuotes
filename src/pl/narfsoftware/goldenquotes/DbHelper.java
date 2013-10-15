@@ -96,14 +96,14 @@ public class DbHelper extends SQLiteOpenHelper {
 		Random r = new Random();
 		Integer id = r.nextInt(count) + 1;
 
-		final String THEQ = "select " + Quote.TABLE_NAME + "."
+		final String QUERY = "select " + Quote.TABLE_NAME + "."
 				+ Quote.C_CONTENT + ", " + Author.TABLE_NAME + "."
 				+ Author.C_NAME + " from " + Quote.TABLE_NAME + " join "
 				+ Author.TABLE_NAME + " on " + Quote.TABLE_NAME + "."
 				+ Quote.C_AUTHOR + "=" + Author.TABLE_NAME + "." + Quote.C_ID
 				+ " where " + Quote.TABLE_NAME + "." + Quote.C_ID + "=?";
 
-		return db.rawQuery(THEQ, new String[] { id.toString() });
+		return db.rawQuery(QUERY, new String[] { id.toString() });
 	}
 
 	public Cursor getQuote(Integer id) {

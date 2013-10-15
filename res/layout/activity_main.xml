@@ -17,6 +17,7 @@
         android:layout_weight="0.45"
         android:ems="10"
         android:fontFamily="Thin"
+        android:textSize="18sp"
         android:freezesText="true"
         android:gravity="bottom|center_horizontal"
         android:hint="@string/random_quote_hint"

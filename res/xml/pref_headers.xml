@@ -1,0 +1,15 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="pl.narfsoftware.goldenquotes.SettingsActivity$GeneralPreferenceFragment"
+        android:title="@string/pref_header_appearance" />
+    <header
+        android:fragment="pl.narfsoftware.goldenquotes.SettingsActivity$NotificationPreferenceFragment"
+        android:title="@string/pref_header_notifications" />
+    <header
+        android:fragment="pl.narfsoftware.goldenquotes.SettingsActivity$DataSyncPreferenceFragment"
+        android:title="@string/pref_header_data_sync" />
+
+</preference-headers>

@@ -2,6 +2,7 @@ package pl.narfsoftware.goldenquotes;
 
 import pl.narfsoftware.goldenquotes.logic.Author;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -9,8 +10,8 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class AuthorList extends ListActivity {
 
@@ -31,25 +32,17 @@ public class AuthorList extends ListActivity {
 		db.openDataBase();
 		ListView list = getListView();
 
-		Cursor c = db.getAuthorsList();
+		final Cursor c = db.getAuthorsList();
 
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.row_author_info, c, FROM, TO, 0);
-
-		SimpleCursorAdapter.ViewBinder binder = new SimpleCursorAdapter.ViewBinder() {
+				R.layout.row_author_info, c, FROM, TO, 0) {
 			@Override
-			public boolean setViewValue(View view, Cursor cursor,
-					int columnIndex) {
-				String name = cursor.getColumnName(columnIndex);
-				if (Author.C_ID.equals(name)) {
-					int id = cursor.getInt(columnIndex);
-					view.setTag(id);
-					return true;
-				}
-				return false;
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View view = super.getView(position, convertView, parent);
+				view.setTag(c.getInt(c.getColumnIndex(Author.C_ID)));
+				return view;
 			}
 		};
-		adapter.setViewBinder(binder);
 
 		list.setAdapter(adapter);
 
@@ -57,9 +50,10 @@ public class AuthorList extends ListActivity {
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// super.onListItemClick(l, v, position, id);
-		Toast.makeText(this,
-				"ID=" + l.getItemAtPosition(position).toString(),
-				Toast.LENGTH_SHORT).show();
+		int authorId = (Integer) v.getTag();
+		Intent intent = new Intent(this, AuthorInfoActivity.class);
+		intent.putExtra(MainActivity.EXTRA_AUTHOR_ID, authorId);
+		startActivity(intent);
 	}
 
 	/**
@@ -67,9 +61,7 @@ public class AuthorList extends ListActivity {
 	 */
 
 	private void setupActionBar() {
-
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
 	}
 
 	@Override
@@ -92,6 +84,10 @@ public class AuthorList extends ListActivity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
+			return true;
+
 		}
 		return super.onOptionsItemSelected(item);
 	}

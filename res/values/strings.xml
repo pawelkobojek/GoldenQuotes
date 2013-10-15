@@ -14,5 +14,22 @@
     <string name="nationality">Nationality:</string>
     <string name="profession">Profession:</string>
     <string name="title_activity_author_list">Authors</string>
+    <string name="title_activity_help">Help</string>
+    <string name="help_text">Sensors\nMain Activity displays chosen in settings sensors. If application is receiving data from particular senors, it is immediately displayed, otherwise you see \'No Data\'\
+. Data accuracy depends on hardware quality. Application merely display received data. Another possibility is that your device simply do not support chosen sensor. If so, you get \"Sensor unavailable\" me\
+ssage.\n\nData Saving\nIn order to see data history graph you must check that option out in settings. However be aware that it cause chosen sensors to stay active, even if you close application. That may \
+drain device battery especially quickly. So always remember to stop saving data if you do not need it. By default this option is turned off.</string>
+    <string name="action_help_title">Help</string>
+    <string name="title_activity_about">About</string>
+    <string name="about_site_header">Visit developer\'s site</string>
+    <string name="about_site">www.narfsoftware.pl/en</string>
+    <string name="about_email_title">Contact developer</string>
+    <string name="about_email">info@narfsoftware.pl</string>
+    <string name="logo_description">NarfSoftware Logo</string>
+    <string name="action_about_title">About</string>
+    <string name="about_header">Golden Quotes</string>
+    <string name="about_subheader">version 1.3</string>
+    <string name="about_text">We\'re looking forward to hearing from you. Email us to report bugs, suggest an improvement or if you want to add a translation. We will be glad if you decide to rate and com\
+ment on our apps on Market.</string>
 
 </resources>
