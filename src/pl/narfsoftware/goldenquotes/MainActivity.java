@@ -1,5 +1,6 @@
 package pl.narfsoftware.goldenquotes;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import pl.narfsoftware.goldenquotes.logic.Quote;
@@ -7,11 +8,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -21,6 +25,8 @@ public class MainActivity extends Activity {
 	private static final String FONT_PATH = "Chantelli_Antiqua.ttf";
 
 	public static final String EXTRA_AUTHOR_ID = "pl.narfsoftware.goldenquotes.EXTRA_AUTHOR_ID";
+
+	private static final String KEY_SAVE_QUOTE = "pl.narfsoftware.goldenquotes.QUOTE_INSTANCE_SAVE";
 
 	private DbHelper db;
 	private static Quote quote;
@@ -47,6 +53,11 @@ public class MainActivity extends Activity {
 			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
 		}
 		db = ((GoldenQuotesApp) getApplication()).getDatabase();
+		
+		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R, defValue))
+		
+		getOverflowMenu();
 	}
 
 	@Override
@@ -140,6 +151,24 @@ public class MainActivity extends Activity {
 			Intent intent = new Intent(this, AuthorInfoActivity.class);
 			intent.putExtra(EXTRA_AUTHOR_ID, quote.getAuthor().get_id());
 			startActivity(intent);
+		}
+	}
+	
+	private void getOverflowMenu()
+	{
+		try
+		{
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			if (menuKeyField != null)
+			{
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

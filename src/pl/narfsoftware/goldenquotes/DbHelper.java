@@ -31,14 +31,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public void createDataBase() throws IOException {
-		if (!dbExists()) {
+		//if (!dbExists()) {
 			this.getReadableDatabase();
 			try {
 				copyDataBase();
 			} catch (IOException e) {
 				throw new Error("Error copying database");
 			}
-		}
+		//}
 	}
 
 	private boolean dbExists() {
@@ -83,8 +83,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		Cursor c = db
 				.rawQuery("select count(*) from " + Quote.TABLE_NAME, null);
 		c.moveToFirst();
-		int count = c.getInt(0);
-		return count;
+		return c.getInt(0);
 	}
 
 	public Cursor gamble() {

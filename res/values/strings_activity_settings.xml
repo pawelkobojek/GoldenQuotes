@@ -14,6 +14,7 @@
     <string name="pref_title_add_background_color">Background Color</string>
 
     <string-array name="pref_list_colors">
+        <item>Default (Light Gray)</item>
         <item>Alice Blue</item>
         <item>Aquamarine</item>
         <item>Bisque</item>
@@ -37,6 +38,7 @@
         <item>White</item>
     </string-array>
     <string-array name="pref_list_color_values">
+        <item>#EEEEEE</item>
         <item>#FFF0F8FF</item>
         <item>#667FFFD4</item>
         <item>#FFFFE4C4</item>
