@@ -6,6 +6,8 @@ import java.util.Random;
 import pl.narfsoftware.goldenquotes.logic.Quote;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -53,11 +55,20 @@ public class MainActivity extends Activity {
 			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
 		}
 		db = ((GoldenQuotesApp) getApplication()).getDatabase();
-		
-		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
-		layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R, defValue))
-		
+
 		getOverflowMenu();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		// layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R,
+		// defValue))
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		String color = prefs.getString("bg_colors_list", "#EEEEEE");
+		layout.setBackgroundColor(Color.parseColor(color));
 	}
 
 	@Override
@@ -153,21 +164,17 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 		}
 	}
-	
-	private void getOverflowMenu()
-	{
-		try
-		{
+
+	private void getOverflowMenu() {
+		try {
 			ViewConfiguration config = ViewConfiguration.get(this);
 			Field menuKeyField = ViewConfiguration.class
 					.getDeclaredField("sHasPermanentMenuKey");
-			if (menuKeyField != null)
-			{
+			if (menuKeyField != null) {
 				menuKeyField.setAccessible(true);
 				menuKeyField.setBoolean(config, false);
 			}
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
