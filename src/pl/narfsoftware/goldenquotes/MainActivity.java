@@ -3,12 +3,11 @@ package pl.narfsoftware.goldenquotes;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-import pl.narfsoftware.goldenquotes.logic.Quote;
+import pl.narfsoftware.goldenquotes.model.Quote;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,10 +52,11 @@ public class MainActivity extends Activity {
 			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
 		}
 		db = ((GoldenQuotesApp) getApplication()).getDatabase();
-		
+
 		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
-		layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R, defValue))
-		
+		// layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R,
+		// defValue))
+
 		getOverflowMenu();
 	}
 
@@ -153,21 +153,17 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 		}
 	}
-	
-	private void getOverflowMenu()
-	{
-		try
-		{
+
+	private void getOverflowMenu() {
+		try {
 			ViewConfiguration config = ViewConfiguration.get(this);
 			Field menuKeyField = ViewConfiguration.class
 					.getDeclaredField("sHasPermanentMenuKey");
-			if (menuKeyField != null)
-			{
+			if (menuKeyField != null) {
 				menuKeyField.setAccessible(true);
 				menuKeyField.setBoolean(config, false);
 			}
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

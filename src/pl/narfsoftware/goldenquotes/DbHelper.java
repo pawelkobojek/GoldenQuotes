@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
 
-import pl.narfsoftware.goldenquotes.logic.Author;
-import pl.narfsoftware.goldenquotes.logic.Quote;
+import pl.narfsoftware.goldenquotes.model.Author;
+import pl.narfsoftware.goldenquotes.model.Quote;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -31,14 +31,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public void createDataBase() throws IOException {
-		//if (!dbExists()) {
-			this.getReadableDatabase();
-			try {
-				copyDataBase();
-			} catch (IOException e) {
-				throw new Error("Error copying database");
-			}
-		//}
+		// if (!dbExists()) {
+		this.getReadableDatabase();
+		try {
+			copyDataBase();
+		} catch (IOException e) {
+			throw new Error("Error copying database");
+		}
+		// }
 	}
 
 	private boolean dbExists() {
@@ -148,4 +148,9 @@ public class DbHelper extends SQLiteOpenHelper {
 				null, null, null, null, null);
 	}
 
+	public Cursor getFavouriteQuotes() {
+		return db.query(Quote.TABLE_NAME, null,
+				Quote.C_LIKE_COUNT + ">?", new String[] { "0" }, null, null,
+				null);
+	}
 }

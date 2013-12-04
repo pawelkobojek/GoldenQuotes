@@ -47,6 +47,14 @@
             android:name="pl.narfsoftware.goldenquotes.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name="pl.narfsoftware.goldenquotes.FavouritesActivity"
+            android:label="@string/title_activity_favourites"
+            android:parentActivityName="pl.narfsoftware.goldenquotes.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.narfsoftware.goldenquotes.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

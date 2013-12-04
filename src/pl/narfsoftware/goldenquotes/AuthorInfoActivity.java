@@ -1,6 +1,6 @@
 package pl.narfsoftware.goldenquotes;
 
-import pl.narfsoftware.goldenquotes.logic.Author;
+import pl.narfsoftware.goldenquotes.model.Author;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

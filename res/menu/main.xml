@@ -1,9 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    
+    <item 
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_action_share"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="1"
+        android:title="@string/action_share"/>
     <item
         android:id="@+id/action_authors_list"
         android:icon="@drawable/ic_action_storage"
         android:showAsAction="ifRoom"
+        android:orderInCategory="2"
         android:title="@string/authors_list"/>
     <item
         android:id="@+id/action_about"
