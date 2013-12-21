@@ -3,11 +3,16 @@ package pl.narfsoftware.goldenquotes;
 import java.lang.reflect.Field;
 import java.util.Random;
 
+import org.apache.http.protocol.HTTP;
+
 import pl.narfsoftware.goldenquotes.model.Quote;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +21,9 @@ import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 
 public class MainActivity extends Activity {
 
@@ -34,10 +42,15 @@ public class MainActivity extends Activity {
 	private TextView authorTextView;
 	private Button favouriteBtn;
 
+	private UiLifecycleHelper uiHelper;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		uiHelper = new UiLifecycleHelper(this, null);
+		uiHelper.onCreate(savedInstanceState);
 
 		quoteTextView = (TextView) findViewById(R.id.text_quote);
 
@@ -53,7 +66,7 @@ public class MainActivity extends Activity {
 		}
 		db = ((GoldenQuotesApp) getApplication()).getDatabase();
 
-		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		// LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
 		// layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R,
 		// defValue))
 
@@ -61,8 +74,22 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		uiHelper.onResume();
+		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		// layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R,
+		// defValue))
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		String color = prefs.getString("bg_colors_list", "#EEEEEE");
+		layout.setBackgroundColor(Color.parseColor(color));
+	}
+
+	@Override
 	protected void onStop() {
 		super.onStop();
+		uiHelper.onStop();
 		db.close();
 	}
 
@@ -83,10 +110,57 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		uiHelper.onDestroy();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		uiHelper.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		uiHelper.onActivityResult(requestCode, resultCode, data,
+				new FacebookDialog.Callback() {
+					@Override
+					public void onError(FacebookDialog.PendingCall pendingCall,
+							Exception error, Bundle data) {
+						Log.e("Activity",
+								String.format("Error: %s", error.toString()));
+					}
+
+					@Override
+					public void onComplete(
+							FacebookDialog.PendingCall pendingCall, Bundle data) {
+						Log.i("Activity", "Success!");
+					}
+				});
+	}
+
+	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_authors_list:
 			startActivity(new Intent(this, AuthorList.class));
+			return true;
+		case R.id.action_share:
+
+			// FacebookDialog fbDialog = new FacebookDialog.ShareDialogBuilder(
+			// this).setDescription("Sumfink").setLink("ASD").build();
+			// uiHelper.trackPendingDialogCall(fbDialog.present());
+
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType(HTTP.PLAIN_TEXT_TYPE);
+			shareIntent.putExtra(Intent.EXTRA_TEXT, this.quoteTextView
+					.getText().toString() + "\n by GoldenQuotes app!");
+			Intent chooser = Intent.createChooser(shareIntent, getResources()
+					.getString(R.string.share_chooser_title));
+			startActivity(chooser);
 			return true;
 		case R.id.action_about:
 			startActivity(new Intent(this, AboutActivity.class));
@@ -167,4 +241,5 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
 }

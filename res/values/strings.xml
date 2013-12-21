@@ -33,5 +33,7 @@ drain device battery especially quickly. So always remember to stop saving data 
     <string name="about_text">We\'re looking forward to hearing from you. Email us to report bugs, suggest an improvement or if you want to add a translation. We will be glad if you decide to rate and com\
 ment on our apps on Market.</string>
     <string name="title_activity_favourites">FavouritesActivity</string>
+    <string name="share_chooser_title">Share quote with friends</string>
+    <string name="app_id">181461588728401</string>
 
 </resources>
