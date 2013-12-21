@@ -35,5 +35,8 @@ ment on our apps on Market.</string>
     <string name="title_activity_favourites">FavouritesActivity</string>
     <string name="share_chooser_title">Share quote with friends</string>
     <string name="app_id">181461588728401</string>
+    <string name="toast_no_app_can_handle">There\'s no app which can handle that request!</string>
+    <string name="wiki_more_info">More info on wikipedia:</string>
+    <string name="featured_quote">Featured quote:</string>
 
 </resources>

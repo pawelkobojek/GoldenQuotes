@@ -3,10 +3,13 @@ package pl.narfsoftware.goldenquotes;
 import pl.narfsoftware.goldenquotes.model.Author;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class AuthorInfoActivity extends Activity {
@@ -19,6 +22,8 @@ public class AuthorInfoActivity extends Activity {
 	private TextView textDeath;
 	private TextView textNation;
 	private TextView textProfession;
+	private TextView textFeaturedQuote;
+	private TextView textWikipediaLink;
 
 	private static Author author;
 
@@ -34,7 +39,13 @@ public class AuthorInfoActivity extends Activity {
 		textDeath = (TextView) findViewById(R.id.text_death_value);
 		textNation = (TextView) findViewById(R.id.text_nationality_value);
 		textProfession = (TextView) findViewById(R.id.text_profession_value);
+		textWikipediaLink = (TextView) findViewById(R.id.text_wikipedia_link);
+		textWikipediaLink.setMovementMethod(LinkMovementMethod.getInstance());
+		textFeaturedQuote = (TextView) findViewById(R.id.text_featured_quote);
+		textFeaturedQuote.setTypeface(Typeface.createFromAsset(getAssets(),
+				MainActivity.FONT_PATH));
 
+		// TODO Wrong approach I guess. Change the way of using db connection
 		this.db = ((GoldenQuotesApp) getApplication()).getDatabase();
 		int authorId;
 
@@ -52,17 +63,61 @@ public class AuthorInfoActivity extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		// Save current author id to load the author from db
 		outState.putInt(STATE_AUTHOR_ID, this.author.get_id());
 
 		super.onSaveInstanceState(outState);
 	}
 
+	/**
+	 * Populate TextViews with information about the Author.
+	 */
 	private void fillWithData() {
+		// Every Author has to have name specified.
 		textName.setText(author.getName());
-		textBirth.setText(author.getBirthDate());
-		textDeath.setText(author.getDeathDate());
-		textNation.setText(author.getNationality());
-		textProfession.setText(author.getProfession());
+
+		if (author.getBirthDate() == null) {
+			(findViewById(R.id.text_birth_date)).setVisibility(View.INVISIBLE);
+			textBirth.setVisibility(View.INVISIBLE);
+		} else {
+			textBirth.setText(author.getBirthDate());
+		}
+
+		if (author.getDeathDate() == null) {
+			(findViewById(R.id.text_death_date)).setVisibility(View.INVISIBLE);
+			textDeath.setVisibility(View.INVISIBLE);
+		} else {
+			textDeath.setText(author.getDeathDate());
+		}
+
+		if (author.getNationality() == null) {
+			(findViewById(R.id.text_nationality)).setVisibility(View.INVISIBLE);
+			textName.setVisibility(View.INVISIBLE);
+		} else {
+			textNation.setText(author.getNationality());
+		}
+
+		if (author.getProfession() == null) {
+			(findViewById(R.id.text_profession)).setVisibility(View.INVISIBLE);
+			textProfession.setVisibility(View.INVISIBLE);
+		} else {
+			textProfession.setText(author.getProfession());
+		}
+
+		// No null-checking based on assumption that every Author has at least
+		// one quote.
+		textFeaturedQuote.setText(author.getFeaturedQuote());
+
+		if (author.getWikipediaUrl() == null) {
+			textWikipediaLink.setVisibility(View.INVISIBLE);
+		} else {
+			textWikipediaLink.setText(Html.fromHtml(getResources().getString(
+					R.string.wiki_more_info)
+					+ " <a href=\""
+					+ author.getWikipediaUrl()
+					+ "\">"
+					+ author.getName() + "</a>"));
+		}
 	}
 
 	/**

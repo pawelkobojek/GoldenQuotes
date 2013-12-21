@@ -3,6 +3,7 @@ package pl.narfsoftware.goldenquotes;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,10 +11,11 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 public class AboutActivity extends Activity {
 	static final String TAG = "AboutActivity";
-	static final String URL_MARKET = "market://details?id=pl.narfsoftware.thermometer";
+	static final String URL_MARKET = "market://details?id=pl.narfsoftware.goldenquotes";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,15 @@ public class AboutActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
 				intent.setData(Uri.parse(URL_MARKET));
-				startActivity(intent);
+				PackageManager pm = getPackageManager();
+				if (pm.queryIntentActivities(intent, 0).size() > 0)
+					startActivity(intent);
+				else
+					Toast.makeText(
+							AboutActivity.this,
+							getResources().getString(
+									R.string.toast_no_app_can_handle),
+							Toast.LENGTH_LONG).show();
 			}
 		});
 	}

@@ -30,6 +30,10 @@
         <item name="android:padding">10dip</item>
     </style>
 
+    <style name="textStyleAuthorInfo">
+        <item name="android:textColor">#ff444444</item>
+    </style>
+
     <style name="textStyleQuote" parent="@android:style/Widget.TextView">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/background_dark</item>
@@ -44,16 +48,34 @@
     <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionBarTabStyle">@style/tabStyle</item>
+        <item name="android:actionBarTabTextStyle">@style/actionBarTabTextStyle</item>
+        <item name="android:actionMenuTextColor">@android:color/background_light</item>
+        <item name="android:actionOverflowButtonStyle">@style/actionOverflowStyle</item>
     </style>
 
     <!-- ActionBar styles -->
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#ff33b5e5</item>
+        <item name="android:background">#ff666666</item>
+        <item name="android:titleTextStyle">@style/actionBarTextStyle</item>
+    </style>
+
+    <!-- Overflow styles -->
+    <style name="actionOverflowStyle">
+        <item name="android:src">@drawable/ic_action_overflow</item>
     </style>
 
     <!-- Tab styles -->
     <style name="tabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
-        <item name="android:background">#ff33b5e5</item>
+        <item name="android:background">#ff666666</item>
+    </style>
+
+    <!-- ActionBar text styles -->
+    <style name="actionBarTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/background_light</item>
+    </style>
+
+    <style name="actionBarTabTextStyle" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="android:textColor">@android:color/background_light</item>
     </style>
 
 </resources>

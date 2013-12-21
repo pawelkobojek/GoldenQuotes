@@ -66,8 +66,9 @@
         android:id="@+id/button_gamble"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff33b5e5"
+        android:background="#ff777777"
         android:onClick="onClickBtn"
-        android:text="Gamble" />
+        android:text="Gamble"
+        android:textColor="@android:color/background_light" />
 
 </LinearLayout>

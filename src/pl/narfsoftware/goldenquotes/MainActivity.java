@@ -27,12 +27,25 @@ import com.facebook.widget.FacebookDialog;
 
 public class MainActivity extends Activity {
 
+	/**
+	 * Tag used for logging and testing purposes.
+	 */
 	private static final String TAG = "MainActivity";
 
-	private static final String FONT_PATH = "Chantelli_Antiqua.ttf";
+	/**
+	 * Path to the font used as quotes' font.
+	 */
+	public static final String FONT_PATH = "Chantelli_Antiqua.ttf";
 
+	/**
+	 * Constant being a key transferred to AuthorInfoActivity in order to get
+	 * selected author row in database.
+	 */
 	public static final String EXTRA_AUTHOR_ID = "pl.narfsoftware.goldenquotes.EXTRA_AUTHOR_ID";
 
+	/**
+	 * Not used
+	 */
 	private static final String KEY_SAVE_QUOTE = "pl.narfsoftware.goldenquotes.QUOTE_INSTANCE_SAVE";
 
 	private DbHelper db;
@@ -65,10 +78,6 @@ public class MainActivity extends Activity {
 			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
 		}
 		db = ((GoldenQuotesApp) getApplication()).getDatabase();
-
-		// LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
-		// layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R,
-		// defValue))
 
 		getOverflowMenu();
 	}
@@ -207,6 +216,12 @@ public class MainActivity extends Activity {
 		authorTextView.setText(quote.getAuthor().getName());
 	}
 
+	/**
+	 * Interaction logic for FavouriteButton.
+	 * 
+	 * @param v
+	 *            Clicked button.
+	 */
 	public void onClickBtnFavourite(View v) {
 		if (quote.isFavourite()) {
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(
@@ -220,9 +235,19 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Interaction logic for AuthorInfoButton.
+	 * 
+	 * @param v
+	 *            Clicked button.
+	 */
 	public void onClickAuthorInfo(View v) {
+		// Perform any action only if there's quote on the screen.
 		if (quote != null) {
 			Intent intent = new Intent(this, AuthorInfoActivity.class);
+
+			// This extra is used in order to select proper Author in stared
+			// AuthorInfoActivity.
 			intent.putExtra(EXTRA_AUTHOR_ID, quote.getAuthor().get_id());
 			startActivity(intent);
 		}

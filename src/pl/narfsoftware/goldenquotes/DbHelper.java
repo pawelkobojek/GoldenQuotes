@@ -106,16 +106,25 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public Cursor getQuote(Integer id) {
-		return db.query(true, Quote.TABLE_NAME, Quote.ALL_COLUMNS, Quote.C_ID
-				+ "=?", new String[] { id.toString() }, null, null, null, null);
+		return db.query(true, Quote.TABLE_NAME, null, Quote.C_ID + "=?",
+				new String[] { id.toString() }, null, null, null, null);
 	}
 
 	public Cursor getAuthor(Integer id) {
 
-		return db.query(true, Author.TABLE_NAME, Author.ALL_COLUMNS, Quote.C_ID
-				+ "=?", new String[] { id.toString() }, null, null, null, null);
+		return db.query(true, Author.TABLE_NAME, null, Quote.C_ID + "=?",
+				new String[] { id.toString() }, null, null, null, null);
 	}
 
+	/**
+	 * Changes Quote with the given id state to either favorite or not favorite.
+	 * 
+	 * @param id
+	 *            Id of Quote which state is to be changed.
+	 * @param fav
+	 *            True if Quote is going to be favorite, else false.
+	 * @return Number of modified rows (1 or 0).
+	 */
 	public int updateFavourite(Integer id, boolean fav) {
 		ContentValues values = new ContentValues();
 		values.put(Quote.C_LIKE_COUNT, fav ? 1 : 0);
@@ -143,14 +152,23 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	/**
+	 * Retrieves all authors.
+	 * 
+	 * @return Cursor containing all authors.
+	 */
 	public Cursor getAuthorsList() {
-		return db.query(true, Author.TABLE_NAME, Author.ALL_COLUMNS, null,
-				null, null, null, null, null);
+		return db.query(true, Author.TABLE_NAME, null, null, null, null, null,
+				null, null);
 	}
 
+	/**
+	 * Retrieves all favorite quotes.
+	 * 
+	 * @return Cursor containing all favorite quotes.
+	 */
 	public Cursor getFavouriteQuotes() {
-		return db.query(Quote.TABLE_NAME, null,
-				Quote.C_LIKE_COUNT + ">?", new String[] { "0" }, null, null,
-				null);
+		return db.query(Quote.TABLE_NAME, null, Quote.C_LIKE_COUNT + ">?",
+				new String[] { "0" }, null, null, null);
 	}
 }

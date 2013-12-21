@@ -1,121 +1,182 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AuthorInfoActivity" >
 
-    <TextView
-        android:id="@+id/text_author_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:freezesText="true"
-        android:gravity="center"
-        android:text="AUTHOR NAME"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/text_birth_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/text_birth_value"
-        android:layout_alignBottom="@+id/text_birth_value"
-        android:layout_alignLeft="@+id/text_author_name"
-        android:freezesText="true"
-        android:text="@string/birth_date" />
-
-    <TextView
-        android:id="@+id/text_birth_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/text_author_name"
-        android:layout_below="@+id/text_author_name"
-        android:layout_marginTop="41dp"
-        android:freezesText="true"
-        android:hint="DATE" />
-
-    <TextView
-        android:id="@+id/text_death_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_birth_date"
-        android:layout_below="@+id/text_birth_date"
-        android:layout_marginTop="20dp"
-        android:freezesText="true"
-        android:text="@string/death_date" />
-
-    <TextView
-        android:id="@+id/text_death_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/text_death_date"
-        android:layout_alignBottom="@+id/text_death_date"
-        android:layout_alignRight="@+id/text_birth_value"
-        android:freezesText="true"
-        android:hint="DATE" />
-
-    <TextView
-        android:id="@+id/text_nationality"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_death_date"
-        android:layout_below="@+id/text_death_date"
-        android:layout_marginTop="20dp"
-        android:freezesText="true"
-        android:text="@string/nationality" />
-
-    <TextView
-        android:id="@+id/text_nationality_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/text_nationality"
-        android:layout_alignBottom="@+id/text_nationality"
-        android:layout_alignRight="@+id/text_death_value"
-        android:freezesText="true"
-        android:text="VALUE" />
-
-    <TextView
-        android:id="@+id/text_profession"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_nationality"
-        android:layout_marginTop="20dp"
-        android:freezesText="true"
-        android:text="@string/profession" />
-
-    <TextView
-        android:id="@+id/text_profession_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/text_profession"
-        android:layout_alignRight="@+id/text_nationality_value"
-        android:freezesText="true"
-        android:hint="VALUE" />
-
-    <TextView
-        android:id="@+id/text_author_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/text_wikipedia_link"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/text_profession"
-        android:layout_marginTop="30dp"
-        android:freezesText="true"
-        android:hint="DESCRIPTION" />
-    
-    <TextView
-        android:id="@+id/text_wikipedia_link"
+    <RelativeLayout
+        android:id="@+id/top_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:hint="WIKILINK" />
+        android:layout_height="wrap_content" >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/text_author_name"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:freezesText="true"
+            android:gravity="right"
+            android:text="AUTHOR NAME"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignLeft="@+id/text_author_name"
+            android:layout_below="@+id/text_author_name"
+            android:background="@android:color/black" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mid_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/text_birth_date"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_birth_value"
+            android:layout_alignBottom="@+id/text_birth_value"
+            android:freezesText="true"
+            android:text="@string/birth_date" />
+
+        <TextView
+            android:id="@+id/text_birth_value"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="41dp"
+            android:freezesText="true"
+            android:gravity="right"
+            android:hint="DATE" />
+
+        <TextView
+            android:id="@+id/text_death_date"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_birth_date"
+            android:layout_below="@+id/text_birth_date"
+            android:layout_marginTop="20dp"
+            android:freezesText="true"
+            android:text="@string/death_date" />
+
+        <TextView
+            android:id="@+id/text_death_value"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_death_date"
+            android:layout_alignBottom="@+id/text_death_date"
+            android:layout_alignRight="@+id/text_birth_value"
+            android:freezesText="true"
+            android:gravity="right"
+            android:hint="DATE" />
+
+        <TextView
+            android:id="@+id/text_nationality"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/text_death_date"
+            android:layout_below="@+id/text_death_date"
+            android:layout_marginTop="20dp"
+            android:freezesText="true"
+            android:text="@string/nationality" />
+
+        <TextView
+            android:id="@+id/text_nationality_value"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/text_nationality"
+            android:layout_alignBottom="@+id/text_nationality"
+            android:layout_alignRight="@+id/text_death_value"
+            android:freezesText="true"
+            android:gravity="right"
+            android:text="VALUE" />
+
+        <TextView
+            android:id="@+id/text_profession"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_nationality"
+            android:layout_marginTop="20dp"
+            android:freezesText="true"
+            android:paddingBottom="10dp"
+            android:text="@string/profession" />
+
+        <TextView
+            android:id="@+id/text_profession_value"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/text_profession"
+            android:layout_alignParentRight="true"
+            android:freezesText="true"
+            android:gravity="right"
+            android:hint="VALUE"
+            android:paddingBottom="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/text_featured_quote"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/text_wikipedia_link"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/text_featured_title"
+            android:freezesText="true"
+            android:gravity="center_horizontal"
+            android:paddingTop="25dp"
+            android:hint="FEATURED QUOTE"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_wikipedia_link"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#ccddcc"
+            android:hint="WIKILINK" />
+
+        <TextView
+            android:id="@id/text_featured_title"
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/featured_quote"
+            android:textSize="16sp" />
+
+        <View
+            style="@style/textStyleAuthorInfo"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/black"
+            android:paddingTop="1dp" />
+    </RelativeLayout>
+
+</LinearLayout>

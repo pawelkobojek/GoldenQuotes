@@ -12,9 +12,13 @@ public class Author {
 	public static final String C_DEATH_DATE = "death_date";
 	public static final String C_NATIONALITY = "nationality";
 	public static final String C_PROFESSION = "profession";
+	public static final String C_WIKIPEDIA_URL = "wikipedia_link";
+	public static final String C_FEATURED_QUOTE = "featured_quote";
 
+	// Appears to be useless.
 	public static final String[] ALL_COLUMNS = { C_ID, C_NAME, C_DESCRIPTION,
-			C_BIRTH_DATE, C_DEATH_DATE, C_NATIONALITY, C_PROFESSION };
+			C_BIRTH_DATE, C_DEATH_DATE, C_NATIONALITY, C_PROFESSION,
+			C_WIKIPEDIA_URL };
 
 	private int _id;
 	private String name;
@@ -23,6 +27,8 @@ public class Author {
 	private String deathDate;
 	private String nationality;
 	private String profession;
+	private String wikiepdiaURL;
+	private String featuredQuote;
 
 	public int get_id() {
 		return _id;
@@ -52,8 +58,17 @@ public class Author {
 		return profession;
 	}
 
+	public String getWikipediaUrl() {
+		return wikiepdiaURL;
+	}
+
+	public String getFeaturedQuote() {
+		return featuredQuote;
+	}
+
 	public Author(int id, String name, String desc, String birth, String death,
-			String nationality, String profession) {
+			String nationality, String profession, String wikiUrl,
+			String featured) {
 		this._id = id;
 		this.name = name;
 		this.description = desc;
@@ -61,6 +76,8 @@ public class Author {
 		this.deathDate = death;
 		this.nationality = nationality;
 		this.profession = profession;
+		this.wikiepdiaURL = wikiUrl;
+		this.featuredQuote = featured;
 	}
 
 	public static Author getAuthor(int id, DbHelper db) {
@@ -77,9 +94,15 @@ public class Author {
 		String death = c.getString(c.getColumnIndex(C_DEATH_DATE));
 		String nationality = c.getString(c.getColumnIndex(C_NATIONALITY));
 		String profession = c.getString(c.getColumnIndex(C_PROFESSION));
+		String wikiUrl = c.getString(c.getColumnIndex(C_WIKIPEDIA_URL));
+		int featuredQuoteId = c.getInt(c.getColumnIndex(C_FEATURED_QUOTE));
+		c = db.getQuote(featuredQuoteId);
+		c.moveToFirst();
+		String featuredQuote = (desc == null) ? c.getString(c
+				.getColumnIndex(Quote.C_CONTENT)) : desc;
 
-		return new Author(id, name, desc, birth, death, nationality, profession);
+		return new Author(id, name, desc, birth, death, nationality,
+				profession, wikiUrl, featuredQuote);
 
 	}
-
 }
