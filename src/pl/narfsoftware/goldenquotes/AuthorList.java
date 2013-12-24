@@ -4,6 +4,7 @@ import pl.narfsoftware.goldenquotes.model.Author;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -21,6 +22,8 @@ public class AuthorList extends ListActivity {
 
 	private DbHelper db;
 
+	private AsyncAuthorsLoader taskLoader;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,24 +31,18 @@ public class AuthorList extends ListActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 
-		db = ((GoldenQuotesApp) getApplication()).getDatabase();
-		db.openDataBase();
-		ListView list = getListView();
+		db = new DbHelper(this);
+		db.open();
 
-		final Cursor c = db.getAuthorsList();
+		taskLoader = new AsyncAuthorsLoader();
+		taskLoader.execute();
+	}
 
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.row_author_info, c, FROM, TO, 0) {
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				View view = super.getView(position, convertView, parent);
-				view.setTag(c.getInt(c.getColumnIndex(Author.C_ID)));
-				return view;
-			}
-		};
-
-		list.setAdapter(adapter);
-
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (taskLoader != null)
+			taskLoader.cancel(true);
 	}
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -72,6 +69,18 @@ public class AuthorList extends ListActivity {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		db.open();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		db.close();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -87,9 +96,36 @@ public class AuthorList extends ListActivity {
 		case R.id.action_settings:
 			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
-
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private class AsyncAuthorsLoader extends
+			AsyncTask<Void, Void, SimpleCursorAdapter> {
+
+		@Override
+		protected SimpleCursorAdapter doInBackground(Void... params) {
+			final Cursor c = db.getAuthorsList();
+
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+					AuthorList.this, R.layout.row_author_info, c, FROM, TO, 0) {
+				@Override
+				public View getView(int position, View convertView,
+						ViewGroup parent) {
+					View view = super.getView(position, convertView, parent);
+					view.setTag(c.getInt(c.getColumnIndex(Author.C_ID)));
+					return view;
+				}
+			};
+			return adapter;
+		}
+
+		@Override
+		protected void onPostExecute(SimpleCursorAdapter result) {
+			super.onPostExecute(result);
+			getListView().setAdapter(result);
+		}
+
 	}
 
 }

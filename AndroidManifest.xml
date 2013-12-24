@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 
     <application
         android:name="pl.narfsoftware.goldenquotes.GoldenQuotesApp"
@@ -16,7 +16,7 @@
         android:theme="@style/CustomActionBarTheme" >
         <activity
             android:name="pl.narfsoftware.goldenquotes.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,17 +48,17 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name="pl.narfsoftware.goldenquotes.FavouritesActivity"
+            android:name="pl.narfsoftware.goldenquotes.FavoritesActivity"
             android:label="@string/title_activity_favourites"
             android:parentActivityName="pl.narfsoftware.goldenquotes.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.narfsoftware.goldenquotes.MainActivity" />
         </activity>
-        
-        <meta-data 
+
+        <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/app_id"/>
+            android:value="@string/app_id" />
     </application>
 
 </manifest>

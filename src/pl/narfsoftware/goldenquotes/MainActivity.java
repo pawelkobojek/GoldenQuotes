@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,9 +22,6 @@ import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.facebook.UiLifecycleHelper;
-import com.facebook.widget.FacebookDialog;
 
 public class MainActivity extends Activity {
 
@@ -48,22 +46,22 @@ public class MainActivity extends Activity {
 	 */
 	private static final String KEY_SAVE_QUOTE = "pl.narfsoftware.goldenquotes.QUOTE_INSTANCE_SAVE";
 
-	private DbHelper db;
 	private static Quote quote;
 
 	private TextView quoteTextView;
 	private TextView authorTextView;
 	private Button favouriteBtn;
 
-	private UiLifecycleHelper uiHelper;
+	private AsyncQuoteLoader taskLoader;
+	private AsyncFavoriteSetter taskFavorite;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		uiHelper = new UiLifecycleHelper(this, null);
-		uiHelper.onCreate(savedInstanceState);
+		taskLoader = new AsyncQuoteLoader();
+		taskFavorite = new AsyncFavoriteSetter();
 
 		quoteTextView = (TextView) findViewById(R.id.text_quote);
 
@@ -77,7 +75,6 @@ public class MainActivity extends Activity {
 		if (quote == null) {
 			(findViewById(R.id.stacked_buttons)).setVisibility(View.INVISIBLE);
 		}
-		db = ((GoldenQuotesApp) getApplication()).getDatabase();
 
 		getOverflowMenu();
 	}
@@ -85,10 +82,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		uiHelper.onResume();
+
 		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
-		// layout.setBackgroundColor(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(R,
-		// defValue))
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 		String color = prefs.getString("bg_colors_list", "#EEEEEE");
@@ -98,15 +93,18 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		uiHelper.onStop();
-		db.close();
+		if (taskLoader != null)
+			taskLoader.cancel(true);
+		if (taskFavorite != null)
+			taskFavorite.cancel(true);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		db.openDataBase();
 		if (quote != null) {
+			taskLoader = new AsyncQuoteLoader();
+			taskLoader.execute(quote.get_id());
 			fillWithData();
 			if (quote.isFavourite()) {
 				favouriteBtn.setCompoundDrawablesWithIntrinsicBounds(
@@ -119,50 +117,30 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		uiHelper.onDestroy();
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		uiHelper.onActivityResult(requestCode, resultCode, data,
-				new FacebookDialog.Callback() {
-					@Override
-					public void onError(FacebookDialog.PendingCall pendingCall,
-							Exception error, Bundle data) {
-						Log.e("Activity",
-								String.format("Error: %s", error.toString()));
-					}
-
-					@Override
-					public void onComplete(
-							FacebookDialog.PendingCall pendingCall, Bundle data) {
-						Log.i("Activity", "Success!");
-					}
-				});
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.action_favorites:
+			startActivity(new Intent(this, FavoritesActivity.class));
+			return true;
 		case R.id.action_authors_list:
 			startActivity(new Intent(this, AuthorList.class));
 			return true;
 		case R.id.action_share:
-
-			// FacebookDialog fbDialog = new FacebookDialog.ShareDialogBuilder(
-			// this).setDescription("Sumfink").setLink("ASD").build();
-			// uiHelper.trackPendingDialogCall(fbDialog.present());
-
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType(HTTP.PLAIN_TEXT_TYPE);
 			shareIntent.putExtra(Intent.EXTRA_TEXT, this.quoteTextView
@@ -190,13 +168,14 @@ public class MainActivity extends Activity {
 	}
 
 	public void onClickBtn(View v) {
+		taskLoader = new AsyncQuoteLoader();
+		taskLoader.execute();
+	}
+
+	private void fillWithData() {
 		(findViewById(R.id.stacked_buttons)).setVisibility(View.VISIBLE);
-
-		Random r = new Random();
-		int id = r.nextInt(this.db.getQuotesCount()) + 1;
-		quote = Quote.getQuote(id, db);
-
-		fillWithData();
+		quoteTextView.setText(quote.getContent());
+		authorTextView.setText(quote.getAuthor().getName());
 
 		if (quote.isFavourite()) {
 			favouriteBtn.setCompoundDrawablesWithIntrinsicBounds(
@@ -208,12 +187,6 @@ public class MainActivity extends Activity {
 
 		Log.d(TAG, "QUOTE: " + quoteTextView.getText().toString());
 		Log.d(TAG, "AUTHOR: " + authorTextView.getText().toString());
-
-	}
-
-	private void fillWithData() {
-		quoteTextView.setText(quote.getContent());
-		authorTextView.setText(quote.getAuthor().getName());
 	}
 
 	/**
@@ -226,12 +199,16 @@ public class MainActivity extends Activity {
 		if (quote.isFavourite()) {
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(
 					R.drawable.ic_action_not_important, 0, 0, 0);
-			quote.setFavourite(false, db);
+			// quote.setFavourite(false, db);
+			taskFavorite = new AsyncFavoriteSetter();
+			taskFavorite.execute(false);
 
 		} else {
 			((Button) v).setCompoundDrawablesWithIntrinsicBounds(
 					R.drawable.ic_action_important, 0, 0, 0);
-			quote.setFavourite(true, db);
+			// quote.setFavourite(true, db);
+			taskFavorite = new AsyncFavoriteSetter();
+			taskFavorite.execute(true);
 		}
 	}
 
@@ -267,4 +244,51 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	private class AsyncQuoteLoader extends AsyncTask<Integer, Void, Quote> {
+
+		private DbHelper db;
+
+		@Override
+		protected Quote doInBackground(Integer... params) {
+
+			db = new DbHelper(MainActivity.this);
+			db.open();
+
+			if (params.length > 0) {
+				return Quote.getQuote(params[0], db);
+			}
+			Random r = new Random();
+			int id = r.nextInt(db.getQuotesCount()) + 1;
+			return Quote.getQuote(id, db);
+		}
+
+		@Override
+		protected void onPostExecute(Quote result) {
+			super.onPostExecute(result);
+			quote = result;
+			fillWithData();
+
+			db.close();
+		}
+	}
+
+	private class AsyncFavoriteSetter extends AsyncTask<Boolean, Void, Void> {
+
+		private DbHelper db;
+
+		@Override
+		protected Void doInBackground(Boolean... params) {
+			db = new DbHelper(MainActivity.this);
+			db.open();
+			boolean setFavorite = params[0];
+			quote.setFavourite(setFavorite, db);
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			db.close();
+		}
+
+	}
 }

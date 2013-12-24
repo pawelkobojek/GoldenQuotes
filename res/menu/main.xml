@@ -1,17 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    
-    <item 
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_action_view_as_list_fav"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="@string/action_favorites"/>
+    <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share"
-        android:showAsAction="ifRoom"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
+        android:showAsAction="always"
         android:title="@string/action_share"/>
     <item
         android:id="@+id/action_authors_list"
-        android:icon="@drawable/ic_action_storage"
-        android:showAsAction="ifRoom"
-        android:orderInCategory="2"
+        android:icon="@drawable/ic_action_view_as_list_people"
+        android:orderInCategory="3"
+        android:showAsAction="always"
         android:title="@string/authors_list"/>
     <item
         android:id="@+id/action_about"

@@ -1,9 +1,5 @@
 package pl.narfsoftware.goldenquotes;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Random;
 
 import pl.narfsoftware.goldenquotes.model.Author;
@@ -11,72 +7,23 @@ import pl.narfsoftware.goldenquotes.model.Quote;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 
-public class DbHelper extends SQLiteOpenHelper {
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-	private static final String DB_PATH = "/data/data/pl.narfsoftware.goldenquotes/databases/";
+public class DbHelper extends SQLiteAssetHelper {
+
 	private static final String DB_NAME = "quotes";
+	private static final int DB_VERSION = 1;
 
 	private SQLiteDatabase db;
 
-	private final Context context;
-
 	public DbHelper(Context context) {
-		super(context, DB_NAME, null, 1);
-		this.context = context;
+		super(context, DB_NAME, null, DB_VERSION);
 	}
 
-	public void createDataBase() throws IOException {
-		// if (!dbExists()) {
-		this.getReadableDatabase();
-		try {
-			copyDataBase();
-		} catch (IOException e) {
-			throw new Error("Error copying database");
-		}
-		// }
-	}
-
-	private boolean dbExists() {
-		SQLiteDatabase checkDB = null;
-		try {
-			String path = DB_PATH + DB_NAME;
-			checkDB = SQLiteDatabase.openDatabase(path, null,
-					SQLiteDatabase.OPEN_READWRITE);
-		} catch (SQLiteException e) {
-			// db doesnt exist
-		}
-
-		if (checkDB != null) {
-			checkDB.close();
-			return true;
-		}
-		return false;
-	}
-
-	private void copyDataBase() throws IOException {
-		InputStream input = context.getAssets().open(DB_NAME);
-		String outFileName = DB_PATH + DB_NAME;
-		OutputStream output = new FileOutputStream(outFileName);
-		byte[] buffer = new byte[1024];
-		int length;
-		while ((length = input.read(buffer)) > 0) {
-			output.write(buffer, 0, length);
-		}
-
-		output.flush();
-		output.close();
-		input.close();
-	}
-
-	public void openDataBase() throws SQLException {
-		String path = DB_PATH + DB_NAME;
-		this.db = SQLiteDatabase.openDatabase(path, null,
-				SQLiteDatabase.OPEN_READWRITE);
+	public void open() {
+		db = getWritableDatabase();
 	}
 
 	public int getQuotesCount() {
@@ -134,16 +81,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public synchronized void close() {
-
 		super.close();
 		if (this.db != null)
 			this.db.close();
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -170,5 +110,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	public Cursor getFavouriteQuotes() {
 		return db.query(Quote.TABLE_NAME, null, Quote.C_LIKE_COUNT + ">?",
 				new String[] { "0" }, null, null, null);
+	}
+
+	public long insertQuote(String content, int authorId) {
+		ContentValues values = new ContentValues();
+		values.put(Quote.C_AUTHOR, authorId);
+		values.put(Quote.C_CONTENT, content);
+		values.put(Quote.C_LIKE_COUNT, 0);
+
+		return db.insert(Quote.TABLE_NAME, null, values);
 	}
 }

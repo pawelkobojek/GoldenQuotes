@@ -4,6 +4,7 @@ import pl.narfsoftware.goldenquotes.model.Author;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -25,7 +26,9 @@ public class AuthorInfoActivity extends Activity {
 	private TextView textFeaturedQuote;
 	private TextView textWikipediaLink;
 
-	private static Author author;
+	private Author author;
+
+	private AsyncAuthorLoader taskLoader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +48,8 @@ public class AuthorInfoActivity extends Activity {
 		textFeaturedQuote.setTypeface(Typeface.createFromAsset(getAssets(),
 				MainActivity.FONT_PATH));
 
-		// TODO Wrong approach I guess. Change the way of using db connection
-		this.db = ((GoldenQuotesApp) getApplication()).getDatabase();
+		db = new DbHelper(this);
+		db.open();
 		int authorId;
 
 		if (savedInstanceState != null) {
@@ -55,10 +58,28 @@ public class AuthorInfoActivity extends Activity {
 			authorId = getIntent().getExtras().getInt(
 					MainActivity.EXTRA_AUTHOR_ID);
 		}
-		author = Author.getAuthor(authorId, this.db);
+		taskLoader = new AsyncAuthorLoader();
+		taskLoader.execute(authorId);
+	}
 
-		fillWithData();
+	@Override
+	protected void onResume() {
+		super.onResume();
+		db.open();
+	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		db.close();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (taskLoader != null) {
+			taskLoader.cancel(true);
+		}
 	}
 
 	@Override
@@ -92,7 +113,7 @@ public class AuthorInfoActivity extends Activity {
 
 		if (author.getNationality() == null) {
 			(findViewById(R.id.text_nationality)).setVisibility(View.INVISIBLE);
-			textName.setVisibility(View.INVISIBLE);
+			textNation.setVisibility(View.INVISIBLE);
 		} else {
 			textNation.setText(author.getNationality());
 		}
@@ -155,4 +176,20 @@ public class AuthorInfoActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private class AsyncAuthorLoader extends AsyncTask<Integer, Void, Author> {
+
+		@Override
+		protected Author doInBackground(Integer... params) {
+			int authorId = params[0];
+			return Author.getAuthor(authorId, db);
+		}
+
+		@Override
+		protected void onPostExecute(Author result) {
+			super.onPostExecute(result);
+			author = result;
+			fillWithData();
+		}
+
+	}
 }
