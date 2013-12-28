@@ -20,6 +20,7 @@
         android:freezesText="true"
         android:gravity="bottom|center_horizontal"
         android:hint="@string/random_quote_hint"
+        android:scrollbars="vertical"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="18sp" />
 

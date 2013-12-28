@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 	/**
 	 * Tag used for logging and testing purposes.
 	 */
-	private static final String TAG = "MainActivity";
+//	private static final String TAG = "MainActivity";
 
 	/**
 	 * Path to the font used as quotes' font.
@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 	/**
 	 * Not used
 	 */
-	private static final String KEY_SAVE_QUOTE = "pl.narfsoftware.goldenquotes.QUOTE_INSTANCE_SAVE";
+//	private static final String KEY_SAVE_QUOTE = "pl.narfsoftware.goldenquotes.QUOTE_INSTANCE_SAVE";
 
 	private static Quote quote;
 

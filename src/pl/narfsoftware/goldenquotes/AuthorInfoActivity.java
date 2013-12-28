@@ -14,7 +14,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class AuthorInfoActivity extends Activity {
@@ -70,7 +70,7 @@ public class AuthorInfoActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		db.open();
-		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		ScrollView layout = (ScrollView) findViewById(R.id.main_layout);
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
 		String color = prefs.getString("bg_colors_list", "#EEEEEE");

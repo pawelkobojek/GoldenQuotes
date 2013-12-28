@@ -22,7 +22,7 @@ public class AuthorList extends ListActivity {
 
 	public static final String[] FROM = { Author.C_NAME };
 	public static final int[] TO = { R.id.text_author_name_row };
-	private static final String TAG = "pl.narfsoftware.GoldenQuotes.ListActivity";
+//	private static final String TAG = "pl.narfsoftware.GoldenQuotes.ListActivity";
 
 	private DbHelper db;
 
