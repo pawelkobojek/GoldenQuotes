@@ -65,6 +65,9 @@ public class AboutActivity extends Activity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

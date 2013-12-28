@@ -3,14 +3,18 @@ package pl.narfsoftware.goldenquotes;
 import pl.narfsoftware.goldenquotes.model.Author;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AuthorInfoActivity extends Activity {
@@ -66,6 +70,11 @@ public class AuthorInfoActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		db.open();
+		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		String color = prefs.getString("bg_colors_list", "#EEEEEE");
+		layout.setBackgroundColor(Color.parseColor(color));
 	}
 
 	@Override

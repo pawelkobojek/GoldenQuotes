@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -144,7 +143,10 @@ public class MainActivity extends Activity {
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType(HTTP.PLAIN_TEXT_TYPE);
 			shareIntent.putExtra(Intent.EXTRA_TEXT, this.quoteTextView
-					.getText().toString() + "\n by GoldenQuotes app!");
+					.getText().toString()
+					+ "\n "
+					+ this.authorTextView.getText().toString()
+					+ "\n by GoldenQuotes app!");
 			Intent chooser = Intent.createChooser(shareIntent, getResources()
 					.getString(R.string.share_chooser_title));
 			startActivity(chooser);
@@ -184,9 +186,6 @@ public class MainActivity extends Activity {
 			favouriteBtn.setCompoundDrawablesWithIntrinsicBounds(
 					R.drawable.ic_action_not_important, 0, 0, 0);
 		}
-
-		Log.d(TAG, "QUOTE: " + quoteTextView.getText().toString());
-		Log.d(TAG, "AUTHOR: " + authorTextView.getText().toString());
 	}
 
 	/**

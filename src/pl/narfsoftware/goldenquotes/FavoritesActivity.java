@@ -2,16 +2,21 @@ package pl.narfsoftware.goldenquotes;
 
 import pl.narfsoftware.goldenquotes.model.Quote;
 import android.app.ListActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -59,6 +64,11 @@ public class FavoritesActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		db.open();
+		LinearLayout layout = (LinearLayout) findViewById(R.id.main_layout);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		String color = prefs.getString("bg_colors_list", "#EEEEEE");
+		layout.setBackgroundColor(Color.parseColor(color));
 	}
 
 	@Override
@@ -93,6 +103,9 @@ public class FavoritesActivity extends ListActivity {
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
 			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.action_settings:
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
