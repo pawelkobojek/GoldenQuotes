@@ -29,7 +29,7 @@ class RandomQuoteFragment extends BaseFragment {
     @Override
     View onCreateView(LayoutInflater inflater,
                       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_random_quote, container, false)
+        def root = inflater.inflate(R.layout.fragment_random_quote, container, false)
 
         tvQuote = root.findViewById(R.id.tvQuote) as TextView
         btnRandomize = root.findViewById(R.id.btnRandomize) as Button

@@ -15,10 +15,6 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard
 @CompileStatic
 class MainActivity extends BaseActivity {
 
-    @Inject
-    @PackageScope
-    SQLiteDatabase db
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState)
