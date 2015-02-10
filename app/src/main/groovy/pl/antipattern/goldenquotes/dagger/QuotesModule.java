@@ -1,14 +1,13 @@
 package pl.antipattern.goldenquotes.dagger;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 import pl.antipattern.goldenquotes.data.QuotesData;
-import pl.antipattern.goldenquotes.data.QuotesDbHelper;
 import pl.antipattern.goldenquotes.ui.MainActivity;
 import pl.antipattern.goldenquotes.ui.RandomQuoteFragment;
 
@@ -29,13 +28,13 @@ public class QuotesModule {
 
     @Provides
     @Singleton
-    public SQLiteDatabase provideDatabase() {
-        return new QuotesDbHelper(context).getWritableDatabase();
+    public Realm provideRealm() {
+        return Realm.getInstance(context);
     }
 
     @Provides
     @Singleton
-    public QuotesData provideData(SQLiteDatabase db) {
-        return new QuotesData(db);
+    public QuotesData provideData(Realm realm) {
+        return new QuotesData(realm);
     }
 }

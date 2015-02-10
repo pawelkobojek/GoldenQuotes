@@ -32,5 +32,5 @@ dependencies {
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'io.reactivex:rxandroid:0.24.0'
-    compile 'nl.qbusict:cupboard:2.1.1'
+    compile 'io.realm:realm-android:0.71.0'
 }
