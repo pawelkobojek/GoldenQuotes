@@ -3,7 +3,7 @@ package pl.antipattern.goldenquotes.data
 import io.realm.Realm
 import pl.antipattern.goldenquotes.data.model.Quote
 import rx.Subscriber
-import rx.schedulers.Schedulers;
+import rx.schedulers.Schedulers
 
 final class QuotesData {
     private final Realm realm
@@ -13,7 +13,6 @@ final class QuotesData {
     }
 
     rx.Observable<Quote> randomQuote() {
-
         rx.Observable.create(new rx.Observable.OnSubscribe<Quote>() {
             @Override
             void call(Subscriber<? super Quote> subscriber) {

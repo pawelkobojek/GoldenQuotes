@@ -23,18 +23,18 @@ class RandomQuoteFragment extends BaseFragment {
     @PackageScope
     QuotesData data
 
-    private Button btnRandomize
-
     @Override
     View onCreateView(LayoutInflater inflater,
                       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         def root = inflater.inflate(R.layout.fragment_random_quote, container, false)
         def tvQuote = root.findViewById(R.id.tvQuote) as TextView
+        def tvAuthor = root.findViewById(R.id.tvAuthor) as TextView
+        def btnRandomize = root.findViewById(R.id.btnRandomize) as Button
 
-        btnRandomize = root.findViewById(R.id.btnRandomize) as Button
         btnRandomize.onClickListener = {
             data.randomQuote().observeOn(mainThread()).subscribe({
                 tvQuote.text = it.content
+                tvAuthor.text = it.author.name
             }, {
                 tvQuote.text = "ERROR :("
             })
@@ -42,6 +42,7 @@ class RandomQuoteFragment extends BaseFragment {
 
         data.randomQuote().observeOn(mainThread()).subscribe({
             tvQuote.text = it.content
+            tvAuthor.text = it.author.name
         }, {
             tvQuote.text = "ERROR :("
         })
