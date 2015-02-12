@@ -1,9 +1,7 @@
 package pl.antipattern.goldenquotes.ui
 
 import android.os.Bundle
-import android.os.Looper
 import android.support.annotation.Nullable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
 import pl.antipattern.goldenquotes.R
 import pl.antipattern.goldenquotes.data.QuotesData
+import rx.android.view.ViewObservable
 
 import javax.inject.Inject
 
@@ -33,16 +32,9 @@ class RandomQuoteFragment extends BaseFragment {
         def tvAuthor = root.findViewById(R.id.tvAuthor) as TextView
         def btnRandomize = root.findViewById(R.id.btnRandomize) as Button
 
-        btnRandomize.onClickListener = {
-            data.randomQuote().observeOn(mainThread()).subscribe({
-                tvQuote.text = it.content
-                tvAuthor.text = it.author.name
-            }, {
-                tvQuote.text = "ERROR :("
-            })
-        }
-
-        data.randomQuote().observeOn(mainThread()).subscribe({
+        ViewObservable.clicks(btnRandomize, true).flatMap({
+            data.randomQuote()
+        }).observeOn(mainThread()).subscribe({
             tvQuote.text = it.content
             tvAuthor.text = it.author.name
         }, {
