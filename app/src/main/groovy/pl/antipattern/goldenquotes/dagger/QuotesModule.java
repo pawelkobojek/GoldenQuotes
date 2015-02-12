@@ -8,6 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
 import pl.antipattern.goldenquotes.data.QuotesData;
+import pl.antipattern.goldenquotes.data.RealmData;
 import pl.antipattern.goldenquotes.ui.MainActivity;
 import pl.antipattern.goldenquotes.ui.RandomQuoteFragment;
 
@@ -35,6 +36,6 @@ public class QuotesModule {
     @Provides
     @Singleton
     public QuotesData provideData(Realm realm) {
-        return new QuotesData(realm);
+        return new RealmData(realm);
     }
 }
