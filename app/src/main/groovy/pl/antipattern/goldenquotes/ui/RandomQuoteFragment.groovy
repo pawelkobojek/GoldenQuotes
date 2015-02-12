@@ -37,8 +37,6 @@ class RandomQuoteFragment extends BaseFragment {
         }).observeOn(mainThread()).subscribe({
             tvQuote.text = it.content
             tvAuthor.text = it.author.name
-        }, {
-            tvQuote.text = "ERROR :("
         })
 
         root

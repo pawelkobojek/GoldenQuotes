@@ -1,11 +1,11 @@
 package pl.antipattern.goldenquotes.data.model;
 
 import io.realm.RealmObject;
-import pl.antipattern.goldenquotes.data.model.Author;
 
 public class Quote extends RealmObject {
     private String content;
     private Author author;
+    private boolean favorite;
 
     public Author getAuthor() {
         return author;
@@ -21,5 +21,13 @@ public class Quote extends RealmObject {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

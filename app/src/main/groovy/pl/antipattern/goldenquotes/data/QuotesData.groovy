@@ -4,4 +4,5 @@ import pl.antipattern.goldenquotes.data.model.Quote
 
 interface QuotesData {
     rx.Observable<Quote> randomQuote()
+    rx.Observable<List<Quote>> favoriteQuotes()
 }

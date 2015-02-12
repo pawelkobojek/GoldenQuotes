@@ -14,19 +14,28 @@ class RealmData implements QuotesData {
     }
 
     rx.Observable<Quote> randomQuote() {
-        rx.Observable.create(new rx.Observable.OnSubscribe<Quote>() {
-            @Override
-            void call(Subscriber<? super Quote> subscriber) {
-                try {
-                    def count = realm.where(Quote).count() as int
-                    def random = new Random()
-                    def q = realm.where(Quote).findAll().get(random.nextInt(count))
+        rx.Observable.create({ Subscriber<? super Quote> subscriber ->
+            try {
+                def count = realm.where(Quote).count() as int
+                def random = new Random()
+                def q = realm.where(Quote).findAll().get(random.nextInt(count))
 
-                    subscriber.onNext(q)
-                    subscriber.onCompleted()
-                } catch (Throwable e) {
-                    subscriber.onError(e)
-                }
+                subscriber.onNext(q)
+                subscriber.onCompleted()
+            } catch (Throwable e) {
+                subscriber.onError(e)
+            }
+        }).subscribeOn(Schedulers.io())
+    }
+
+    @Override
+    rx.Observable<List<Quote>> favoriteQuotes() {
+        rx.Observable.create({ Subscriber<? super List<Quote>> subscriber ->
+            try {
+                subscriber.onNext(realm.where(Quote).equalTo("favorite", true).findAll())
+                subscriber.onCompleted()
+            } catch (Throwable e) {
+                subscriber.onError(e)
             }
         }).subscribeOn(Schedulers.io())
     }

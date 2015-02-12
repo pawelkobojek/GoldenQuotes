@@ -18,10 +18,11 @@ class QuotesApp extends Application {
 //        def q = realm.createObject(Quote)
 //        q.content = content
 //        q.author = author
+//        q.favorite = false
 //        q
 //    }
 //
-//    void populate() {
+//    static void populate(Realm realm) {
 //        realm.beginTransaction()
 //        def author = realm.createObject(Author)
 //        author.name = "Pliny the Elder"
