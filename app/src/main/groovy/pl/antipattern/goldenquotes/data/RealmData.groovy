@@ -1,6 +1,7 @@
 package pl.antipattern.goldenquotes.data
 
 import io.realm.Realm
+import pl.antipattern.goldenquotes.data.model.Author
 import pl.antipattern.goldenquotes.data.model.Quote
 import rx.Subscriber
 import rx.schedulers.Schedulers
@@ -33,6 +34,18 @@ class RealmData implements QuotesData {
         rx.Observable.create({ Subscriber<? super List<Quote>> subscriber ->
             try {
                 subscriber.onNext(realm.where(Quote).equalTo("favorite", true).findAll())
+                subscriber.onCompleted()
+            } catch (Throwable e) {
+                subscriber.onError(e)
+            }
+        }).subscribeOn(Schedulers.io())
+    }
+
+    @Override
+    rx.Observable<Author> authorByName(String name) {
+        rx.Observable.create({ Subscriber<? super Author> subscriber ->
+            try {
+                subscriber.onNext(realm.where(Author).equalTo("name", name).findFirst())
                 subscriber.onCompleted()
             } catch (Throwable e) {
                 subscriber.onError(e)
