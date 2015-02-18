@@ -38,13 +38,13 @@ class RandomQuoteFragment extends BaseFragment {
                       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         def root = inflater.inflate(R.layout.fragment_random_quote, container, false)
 
-        setupDataFetching(root)
+        setupRandomizeButton(root)
         setupNavigation(root)
 
         root
     }
 
-    private void setupDataFetching(View root) {
+    private void setupRandomizeButton(View root) {
         def tvQuote = root.findViewById(R.id.tvQuote) as TextView
         def tvAuthor = root.findViewById(R.id.tvAuthor) as TextView
         def btnRandomize = root.findViewById(R.id.btnRandomize) as Button
