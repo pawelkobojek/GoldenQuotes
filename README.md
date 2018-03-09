@@ -1,4 +1,8 @@
-# Golden Quotes
+# Golden Quotes [DEPRECATED]
+
+Note: This repo is very old and not viable anymore.
+
+
 Quotes application for Android devices
 
 This application makes use of following libraries:
